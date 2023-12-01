@@ -7,6 +7,7 @@
     tools:context=".ui.home.HomeFragment">
 
     <RelativeLayout
+        android:layout_marginTop="15dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
@@ -26,18 +27,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="15dp"
-                android:paddingVertical="15dp"
+                android:paddingVertical="10dp"
                 android:layout_marginHorizontal="15dp"
                 android:background="@drawable/shape_gray_25"
                 android:hint="搜索框" />
 
-            <Button
-                android:layout_weight="0"
-                android:layout_marginRight="15dp"
-                android:id="@+id/dateSortButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="倒序" />
+
+                <ImageView
+                    android:id="@+id/ivTag"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/daoxu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"></ImageView>
+
+
 
         </LinearLayout>
 

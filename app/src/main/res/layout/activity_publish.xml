@@ -4,6 +4,11 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+<!--    <data>-->
+<!--        <variable-->
+<!--            android:name="viewModel"-->
+<!--            android:type="com.example.myapplicationtest.ui.publish.PublishNoteViewModel" />-->
+<!--    </data>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入标题"
-            android:text="@={viewModel.title}" />
+        />
         <TextView
             android:textSize="20dp"
             android:textColor="#475569"
@@ -49,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入内容"
-            android:text="@={viewModel.content}" />
+            />
 
         <Button
             android:id="@+id/btnPub"
@@ -58,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="发布"
-            android:onClick="@{viewModel::publishNote}" />
+           />
     </LinearLayout>
 
 
