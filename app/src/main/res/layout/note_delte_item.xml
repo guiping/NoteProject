@@ -54,9 +54,9 @@
                 android:id="@+id/editButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="edit"
+                android:text="restore"
                 android:textColor="@android:color/white"
-                android:background="@drawable/shape_blue_4" />
+                android:background="@drawable/shape_green_4" />
 
             <TextView
                 android:layout_marginLeft="20dp"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:text="delete"
                 android:textColor="@android:color/white"
-                android:background="@drawable/shape_yellow_4" />
+                android:background="@drawable/shape_red_4" />
 
         </LinearLayout>
         <View

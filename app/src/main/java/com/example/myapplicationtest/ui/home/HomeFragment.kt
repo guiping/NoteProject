@@ -1,20 +1,30 @@
 package com.example.myapplicationtest.ui.home
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplicationtest.PublishActivity
 import com.example.myapplicationtest.R
 import com.example.myapplicationtest.databinding.FragmentHomeBinding
-import com.example.myapplicationtest.entity.Note
+import com.example.myapplicationtest.entity.BusEvent
+import com.example.myapplicationtest.entity.NoteEntity
 import com.example.myapplicationtest.utils.ClickUtils
+import com.example.myapplicationtest.utils.CustomDialog
+import com.example.myapplicationtest.utils.RxBus
+import com.example.myapplicationtest.utils.TimeUtils
 
 class HomeFragment : Fragment() {
 
@@ -23,23 +33,24 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var ivTag: ImageView
     private lateinit var noteAdapter: NoteAdapter
-
+    private val noteList = ArrayList<NoteEntity>()
     private var isZhengXu = false
+    private val homeViewModel:HomeViewModel by lazy {
+        ViewModelProvider(this)[HomeViewModel::class.java]
+    }
 
-
+    @SuppressLint("CheckResult")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val ivPub: ImageView = binding.ivPublish
         ivTag = binding.ivTag
         recyclerView = binding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(context)
         ivPub.setOnClickListener {
             if (ClickUtils.isClickable(it)) {
                 Intent(activity,PublishActivity::class.java).apply {
@@ -47,28 +58,90 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-        ivTag.setOnClickListener{
+        ivTag.setOnClickListener{ it ->
             if (ClickUtils.isClickable(it)) {
-               if(isZhengXu){
-                   ivTag.setImageResource(R.mipmap.daoxu)
-                   isZhengXu = false
-               }else{
-                   ivTag.setImageResource(R.mipmap.zhengxu)
-                   isZhengXu = true
-               }
+                isZhengXu = if(isZhengXu){
+                    ivTag.setImageResource(R.mipmap.daoxu)
+                    val tempNoteList =  noteList.sortedByDescending { it.currentTimeMillis }
+                    noteList.clear()
+                    noteList.addAll(tempNoteList)
+                    noteAdapter.notifyDataSetChanged()
+                    false
+                }else{
+                   val tempNoteList =  noteList.sortedBy { it.currentTimeMillis }
+                    noteList.clear()
+                    noteList.addAll(tempNoteList)
+                    noteAdapter.notifyDataSetChanged()
+                    ivTag.setImageResource(R.mipmap.zhengxu)
+                    true
+                }
             }
         }
+
+        noteAdapter = NoteAdapter(noteList, object : NoteAdapter.OnEditClickListener {
+            override fun onEditClick(note: NoteEntity) {
+                // 处理编辑点击事件
+            }
+        }, object : NoteAdapter.OnDeleteClickListener {
+            override fun onDeleteClick(note: NoteEntity) {
+                showCustomDialog(note)
+            }
+        })
+        recyclerView.adapter = noteAdapter
         initData()
+
+        RxBus.toObservable(BusEvent::class.java)
+            .subscribe({ message ->
+                // 处理接收到的消息对象
+                println("Received message: ${message.message}")
+                if("UpdateDash" == message.message){
+                    homeViewModel.getAllNoteData()
+                }
+            }, { error ->
+                // 处理接收消息时发生的错误
+                error.printStackTrace()
+            }, {
+                // 处理接收消息完成后的逻辑（可选）
+            })
         return root
     }
 
-    fun  initData(){
-        val nodeList = ArrayList<Note>()
-        noteAdapter = NoteAdapter(nodeList)
-        recyclerView.adapter = noteAdapter
-
-
+    @SuppressLint("NotifyDataSetChanged")
+    private fun  initData(){
+        homeViewModel.getAllNoteData()
+        homeViewModel.nodeLiveData.observe(viewLifecycleOwner){
+            noteList.clear()
+            noteList.addAll(it)
+            noteAdapter.notifyDataSetChanged()
+        }
     }
+
+    override fun onResume() {
+        super.onResume()
+        initData()
+    }
+
+    private fun showCustomDialog(note: NoteEntity) {
+        context?.let {
+            val dialog = CustomDialog(
+                it,
+                "Are you sure to delete the current note?",
+                "After deletion, you can find it in the recycle bin。",
+                object : CustomDialog.OnCancelClickListener{
+                    override fun onCancelClick() {
+                        // none need to do
+                    }
+                },
+                object: CustomDialog.OnConfirmClickListener{
+                    override fun onConfirmClick() {
+                        homeViewModel.deleteNote(note)
+                    }
+                }
+            )
+            dialog.show()
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -77,7 +150,9 @@ class HomeFragment : Fragment() {
 }
 
 class NoteAdapter(
-    private val noteList: List<Note>,
+    private val noteEntityList: List<NoteEntity>,
+    private val onEditClickListener: OnEditClickListener,
+    private val onDeleteClickListener: OnDeleteClickListener
 ) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
@@ -87,22 +162,23 @@ class NoteAdapter(
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        val currentNote = noteList[position]
+        val currentNote = noteEntityList[position]
         holder.titleTextView.text = currentNote.title
         holder.contentTextView.text = currentNote.content
-        holder.dateTextView.text = currentNote.createDate
+        holder.dateTextView.text = currentNote.currentTimeMillis?.toLong()
+            ?.let { TimeUtils.convertTimestampToDateTime(it) }
 
         holder.editButton.setOnClickListener {
-           //
+            onEditClickListener.onEditClick(currentNote)
         }
 
         holder.deleteButton.setOnClickListener {
-           //
+            onDeleteClickListener.onDeleteClick(currentNote)
         }
     }
 
     override fun getItemCount(): Int {
-        return noteList.size
+        return noteEntityList.size
     }
 
     inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -114,11 +190,11 @@ class NoteAdapter(
     }
 
     interface OnEditClickListener {
-        fun onEditClick(note: Note)
+        fun onEditClick(noteEntity: NoteEntity)
     }
 
     interface OnDeleteClickListener {
-        fun onDeleteClick(note: Note)
+        fun onDeleteClick(noteEntity: NoteEntity)
     }
 }
 

@@ -23,7 +23,7 @@
             android:layout_marginHorizontal="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="日记标题" />
+            android:text="Note Title" />
 
         <EditText
             android:id="@+id/titleEditText"
@@ -33,7 +33,7 @@
             android:background="@drawable/shape_gray_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请输入标题"
+            android:hint="Please enter a title"
         />
         <TextView
             android:textSize="20dp"
@@ -41,7 +41,7 @@
             android:layout_marginHorizontal="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="日记内容" />
+            android:text="Notes Content" />
 
         <EditText
             android:id="@+id/contentEditText"
@@ -53,7 +53,7 @@
             android:background="@drawable/shape_gray_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请输入内容"
+            android:hint="Please enter the content"
             />
 
         <Button
@@ -62,7 +62,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="发布"
+            android:text="post"
            />
     </LinearLayout>
 

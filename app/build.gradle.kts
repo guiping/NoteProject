@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-android")
+    id("kotlin-kapt")
+
 }
 
 android {
@@ -51,4 +54,32 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+
+    val room_version = "2.5.0"
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$room_version")
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+
+    // 协程核心库
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
+    // 协程Android支持库
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
+    // 协程Java8支持库
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.4.3")
+    // lifecycle对于协程的扩展封装
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0")
+    implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
+
+
+
+    //Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("io.reactivex.rxjava3:rxjava:3.1.8")
+    implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
+    //BaseQuickAdapter
+    implementation("io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.0")
 }
