@@ -7,7 +7,7 @@
 <!--    <data>-->
 <!--        <variable-->
 <!--            android:name="viewModel"-->
-<!--            android:type="com.example.myapplicationtest.ui.publish.PublishNoteViewModel" />-->
+<!--            android:type="com.odfudndh.mvjsu.ui.publish.PublishNoteViewModel" />-->
 <!--    </data>-->
 
     <LinearLayout
@@ -19,7 +19,7 @@
         <TextView
             android:textSize="20dp"
             android:textColor="#475569"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:layout_marginHorizontal="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

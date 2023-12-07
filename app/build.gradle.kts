@@ -7,15 +7,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.myapplicationtest"
+    namespace = "com.odfudndh.mvjsu"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.myapplicationtest"
+        applicationId = "com.odfudndh.mvjsu"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 10
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -82,4 +82,7 @@ dependencies {
     implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
     //BaseQuickAdapter
     implementation("io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.0")
+
+    implementation ("com.appsflyer:af-android-sdk:6.9.0")
+    implementation ("com.google.code.gson:gson:2.10.1")
 }

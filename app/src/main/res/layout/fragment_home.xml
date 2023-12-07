@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    tools:context="com.odfudndh.mvjsu.ui.home.HomeFragment">
 
     <RelativeLayout
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context="com.odfudndh.mvjsu.MainActivity">
         <RelativeLayout
             android:id="@+id/top"
             android:layout_width="match_parent"

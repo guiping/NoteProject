@@ -3,30 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name="com.odfudndh.mvjsu.NoteApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
-        android:name=".NoteApplication"
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
+        tools:replace="android:fullBackupContent"
         android:theme="@style/Theme.MyApplicationTest"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
+            android:name="com.odfudndh.mvjsu.MainActivity"
             android:label="@string/app_name">
+
+        </activity>
+        <activity android:name="com.odfudndh.mvjsu.PublishActivity" />
+        <activity android:name=".ui.activity.SplashActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".PublishActivity"
-            android:exported="true">
-        </activity>
+        <activity android:name=".ui.activity.WebViewActivity" />
     </application>
 
 </manifest>
