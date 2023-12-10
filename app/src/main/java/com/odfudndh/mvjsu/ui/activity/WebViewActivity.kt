@@ -83,14 +83,18 @@ class WebViewActivity : AppCompatActivity() {
                         try {
                             val jsonObject = JSONObject(value)
                             val url1 = jsonObject.optString("url")
-                            HttpManager.openWebView(this@WebViewActivity, url1)
+                            runOnUiThread {
+                            webView.loadUrl(url1)
+                            }
                         } catch (e: Exception) {
 
                         }
                     }
 
                     "closeWindow" -> {
-                        this@WebViewActivity.finish()
+                        runOnUiThread {
+                            webView.goBack()
+                        }
                     }
 
                     else -> {
@@ -103,9 +107,10 @@ class WebViewActivity : AppCompatActivity() {
         }, "jsBridge")
         webView.webChromeClient = WebChromeClient(this, webView)
         webView.setDownloadListener { str, str2, str3, str4, j2 ->
-
-            HttpManager.openAndroid(this@WebViewActivity, str)
-            finish()
+            Intent("android.intent.action.view").apply {
+                data = Uri.parse(str)
+                this@WebViewActivity.startActivity(this)
+            }
         }
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -119,52 +124,36 @@ class WebViewActivity : AppCompatActivity() {
             ): Boolean {
                 Log.e("pLog", "shouldOverrideUrlLoading---- ${request.url.toString()}")
                 val loadUrl = request?.url.toString()
-                if (loadUrl != null && loadUrl.startsWith("tg:") || loadUrl.startsWith("fb://")) {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    startActivity(intent)
-                    return true
+                loadUrl?.let {
+                    if(loadUrl.startsWith("http") || loadUrl.startsWith("https")){
+                        if(!loadUrl.contains("https://landing-page.cdn-dysxb.com/8k8/") && !loadUrl.contains("https://t.me/cskh_8k8")){
+                            webView.loadUrl(loadUrl)
+                            return true
+                        }
+                        Intent("android.intent.action.view").apply {
+                            data = Uri.parse(it)
+                            this@WebViewActivity.startActivity(this)
+                        }
+                    }
+
+
                 }
-                if (loadUrl.startsWith("file://")) {
-                    // 如果 URL 协议为 file://，则启动 APK 安装程序
-                    HttpManager.openAndroid(this@WebViewActivity, loadUrl)
-                    finish()
-                    return true
-                }
-                return false
+                return true
             }
         }
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        return onKeyDown()
-    }
 
     private fun finishWeb() {
-        setResult(-2)
+        setResult(-1)
         finish()
     }
 
-    fun onKeyDown(): Boolean {
-        return if (webView == null) {
-            finish()
-            true
-        } else if (webView!!.canGoBack()) {
+    override fun onBackPressed() {
+        if (this.webView?.canGoBack() == true) {
             this.webView?.goBack()
-            true
-        } else if (webView!!.size > 0) {
-//            (findViewById<View>() as FrameLayout).removeView(webView)
-//            val aab2: WebView = this.f3845aaz.aab()
-//            this.webView = aab2
-//            if (aab2 != null) {
-//                aab2.visibility = 0
-//                this.f3844aay.aaf(this.f3841aav)
-//                return true
-//            }
-            finish()
-            true
         } else {
-            finish()
-            true
+            finishWeb()
         }
     }
 

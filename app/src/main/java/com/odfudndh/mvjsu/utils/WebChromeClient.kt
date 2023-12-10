@@ -29,9 +29,9 @@ class WebChromeClient (var activity: Activity, var webView: WebView) :WebChromeC
         isUserGesture:Boolean,
         resultMsg: Message
     ):Boolean{
-        if(newWebView!=null){
-            return true
-        }
+//        if(newWebView!=null){
+//            return true
+//        }
         newWebView=WebView(view.context)
 // 设置 WebView 属性，如加载方式、JavaScript 支持等
         newWebView?.settings?.javaScriptEnabled=true

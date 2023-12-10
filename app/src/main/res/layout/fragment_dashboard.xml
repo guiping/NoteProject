@@ -24,8 +24,8 @@
             <ImageView
                 android:layout_marginHorizontal="15dp"
                 android:id="@+id/ivClear"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:src="@mipmap/clear"></ImageView>

@@ -7,6 +7,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            storeFile = file("/Users/baoxing/code/AndroidStudioProjects/MyApplicationTest/note.jks")
+            storePassword = "note123456"
+            keyAlias = "note"
+            keyPassword = "note123456"
+        }
+    }
     namespace = "com.odfudndh.mvjsu"
     compileSdk = 33
 
@@ -23,6 +31,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig signingConfigs.release
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

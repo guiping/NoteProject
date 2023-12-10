@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.odfudndh.mvjsu.databinding.FragmentNotificationsBinding
 
-class NotificationsFragment : Fragment() {
+class AboutMeFragment : Fragment() {
 
     private var _binding: FragmentNotificationsBinding? = null
 
@@ -21,8 +21,8 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel =
-            ViewModelProvider(this).get(NotificationsViewModel::class.java)
+        val aboutMeViewModel =
+            ViewModelProvider(this).get(AboutMeViewModel::class.java)
 
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root

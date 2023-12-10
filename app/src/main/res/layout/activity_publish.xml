@@ -14,21 +14,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <TextView
+               android:textSize="20dp"
+               android:textColor="#475569"
+               android:gravity="center"
+               android:layout_width="match_parent"
+               android:layout_height="40dp"
+               android:fontFamily="@font/robotoslab_regular"
+               android:text="Add New Note" />
+           <TextView
+               android:id="@+id/btnPub"
+               android:layout_alignParentEnd="true"
+               android:layout_gravity="center_horizontal"
+               android:layout_width="wrap_content"
+               android:layout_centerVertical="true"
+               android:layout_marginEnd="10dp"
+               android:textColor="@color/black"
+               android:fontFamily="@font/robotoslab_regular"
+               android:layout_height="wrap_content"
+               android:text="Add"
+               />
+       </RelativeLayout>
 
-
-        <TextView
-            android:textSize="20dp"
-            android:textColor="#475569"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Note Title" />
 
         <EditText
             android:id="@+id/titleEditText"
             android:textSize="12dp"
             android:padding="10dp"
+            android:visibility="gone"
             android:layout_margin="15dp"
             android:background="@drawable/shape_gray_4"
             android:layout_width="match_parent"
@@ -39,6 +55,7 @@
             android:textSize="20dp"
             android:textColor="#475569"
             android:layout_marginHorizontal="15dp"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Notes Content" />
@@ -47,23 +64,18 @@
             android:id="@+id/contentEditText"
             android:textSize="12dp"
             android:gravity="left"
-            android:height="300dp"
+            android:minHeight="300dp"
             android:padding="10dp"
-            android:layout_margin="15dp"
-            android:background="@drawable/shape_gray_4"
+            android:layout_margin="5dp"
+            android:text="14dp"
+            android:background="@null"
             android:layout_width="match_parent"
+            android:fontFamily="@font/robotoslab_medium"
             android:layout_height="wrap_content"
             android:hint="Please enter the content"
             />
 
-        <Button
-            android:id="@+id/btnPub"
-            android:width="180dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="post"
-           />
+
     </LinearLayout>
 
 

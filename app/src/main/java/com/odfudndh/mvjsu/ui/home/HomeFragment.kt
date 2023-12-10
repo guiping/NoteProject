@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.odfudndh.mvjsu.PublishActivity
 import com.odfudndh.mvjsu.R
 import com.odfudndh.mvjsu.databinding.FragmentHomeBinding
@@ -46,7 +47,8 @@ class HomeFragment : Fragment() {
         val ivPub: ImageView = binding.ivPublish
         ivTag = binding.ivTag
         recyclerView = binding.recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(context)
+//        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager =  StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         ivPub.setOnClickListener {
             if (ClickUtils.isClickable(it)) {
                 Intent(activity, PublishActivity::class.java).apply {
@@ -77,6 +79,11 @@ class HomeFragment : Fragment() {
         noteAdapter = NoteAdapter(noteList, object : NoteAdapter.OnEditClickListener {
             override fun onEditClick(note: NoteEntity) {
                 // 处理编辑点击事件
+                    Intent(activity, PublishActivity::class.java).apply {
+                        putExtra("note",note.content)
+                        startActivity(this)
+                    }
+
             }
         }, object : NoteAdapter.OnDeleteClickListener {
             override fun onDeleteClick(note: NoteEntity) {

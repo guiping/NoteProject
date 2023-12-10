@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.odfudndh.mvjsu.R
 import com.odfudndh.mvjsu.databinding.FragmentDashboardBinding
 import com.odfudndh.mvjsu.entity.BusEvent
@@ -42,7 +43,8 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
         recyclerView = binding.recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+//        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager =   StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.ivClear.setOnClickListener { if(ClickUtils.isClickable( binding.ivClear)){
             dashboardViewModel.clearAllNote()
             initData()
