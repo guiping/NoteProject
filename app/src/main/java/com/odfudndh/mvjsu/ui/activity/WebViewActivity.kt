@@ -107,8 +107,7 @@ class WebViewActivity : AppCompatActivity() {
         }, "jsBridge")
         webView.webChromeClient = WebChromeClient(this, webView)
         webView.setDownloadListener { str, str2, str3, str4, j2 ->
-            Intent("android.intent.action.view").apply {
-                data = Uri.parse(str)
+            Intent(Intent.ACTION_VIEW,Uri.parse(str)).apply {
                 this@WebViewActivity.startActivity(this)
             }
         }
@@ -130,8 +129,8 @@ class WebViewActivity : AppCompatActivity() {
                             webView.loadUrl(loadUrl)
                             return true
                         }
-                        Intent("android.intent.action.view").apply {
-                            data = Uri.parse(it)
+                        Intent(Intent.ACTION_VIEW,Uri.parse(it)).apply {
+
                             this@WebViewActivity.startActivity(this)
                         }
                     }
