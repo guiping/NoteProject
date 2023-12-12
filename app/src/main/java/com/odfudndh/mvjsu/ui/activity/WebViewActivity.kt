@@ -15,7 +15,9 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.size
 import com.odfudndh.mvjsu.databinding.ActivityWebBinding
+import com.odfudndh.mvjsu.utils.EncryptorUtils
 import com.odfudndh.mvjsu.utils.HttpManager
+import com.odfudndh.mvjsu.utils.NetUtils
 import com.odfudndh.mvjsu.utils.StartActivityManager
 import com.odfudndh.mvjsu.utils.WebChromeClient
 import org.json.JSONObject
@@ -130,7 +132,7 @@ class WebViewActivity : AppCompatActivity() {
                 val loadUrl = request?.url.toString()
                 loadUrl?.let {
                     if(loadUrl.startsWith("http") || loadUrl.startsWith("https")){
-                        if(!loadUrl.contains("https://landing-page.cdn-dysxb.com/8k8/") && !loadUrl.contains("https://t.me/cskh_8k8")){
+                        if(!loadUrl.contains(EncryptorUtils.decryptAES(NetUtils.loadUrl1, NetUtils.secretKey)) && !loadUrl.contains(EncryptorUtils.decryptAES(NetUtils.loadUrl2,NetUtils.secretKey))){
                             webView.loadUrl(loadUrl)
                             return true
                         }

