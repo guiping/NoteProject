@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.size
 import com.odfudndh.mvjsu.databinding.ActivityWebBinding
 import com.odfudndh.mvjsu.utils.HttpManager
+import com.odfudndh.mvjsu.utils.StartActivityManager
 import com.odfudndh.mvjsu.utils.WebChromeClient
 import org.json.JSONObject
 
@@ -83,9 +84,10 @@ class WebViewActivity : AppCompatActivity() {
                         try {
                             val jsonObject = JSONObject(value)
                             val url1 = jsonObject.optString("url")
-                            runOnUiThread {
-                            webView.loadUrl(url1)
-                            }
+                            StartActivityManager.openWebView(this@WebViewActivity,url1)
+//                            runOnUiThread {
+//                                webView.loadUrl(url1)
+//                            }
                         } catch (e: Exception) {
 
                         }
@@ -106,9 +108,12 @@ class WebViewActivity : AppCompatActivity() {
             }
         }, "jsBridge")
         webView.webChromeClient = WebChromeClient(this, webView)
+//        webView.webChromeClient = android.webkit.WebChromeClient()
         webView.setDownloadListener { str, str2, str3, str4, j2 ->
             Intent(Intent.ACTION_VIEW,Uri.parse(str)).apply {
-                this@WebViewActivity.startActivity(this)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                val chooser = Intent.createChooser(this, "Choose a browser")
+                startActivity(chooser)
             }
         }
         webView.webViewClient = object : WebViewClient() {
@@ -130,12 +135,15 @@ class WebViewActivity : AppCompatActivity() {
                             return true
                         }
                         Intent(Intent.ACTION_VIEW,Uri.parse(it)).apply {
-
                             this@WebViewActivity.startActivity(this)
                         }
+                    }else{
+                        Intent(Intent.ACTION_VIEW,Uri.parse(it)).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            val chooser = Intent.createChooser(this, "Choose a browser")
+                              startActivity(chooser)
+                        }
                     }
-
-
                 }
                 return true
             }
